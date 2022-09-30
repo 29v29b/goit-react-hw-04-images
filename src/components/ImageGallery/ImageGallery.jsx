@@ -1,41 +1,39 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'components/Modal/Modal';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import css from './ImageGallery.module.css'
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 
+function ImageGallery({images}) {
 
-export default class ImageGallery extends Component {
-    state = {
-        showModal: false,
-        largeImage: null,
+    const [showModal, setShowModal] = useState(false);
+    const [largeImage, setLargeImage] = useState(null)
+
+    const toggleModal = () => {
+    setShowModal(prevShow => !prevShow);
     }
 
-    toggleModal = () => {
-    this.setState(({ showModal }) => ({ showModal: !showModal, }));
-    }
+    useEffect(() => {
+      document.addEventListener('click', event => {
+        if (event.target.nodeName !== 'IMG') {
+          return;
+          } 
 
-    componentDidMount() {
-        document.addEventListener('click', event => {
-          if (event.target.nodeName !== 'IMG') {
-            this.setState({ showModal: false });
-            return;
-          } else {
-            let picture = this.props.images.filter(obj => {
-              return obj.id === parseInt(event.target.alt);
-            });
-            this.setState({ largeImage: picture[0].largeImageURL });
-          }
-        });
-      }
-
-      render() {
-        const { showModal, largeImage } = this.state;
+        let picture = images.filter(obj => {
+            return obj.id === parseInt(event.target.alt);
+          });      
+        if (!picture.length) {
+          return;
+        }
+        setLargeImage(picture[0].largeImageURL)});
+      }, [largeImage, images]);
+    
+    
         return (
           <>
-            <ul className={css.gallery} onClick={this.toggleModal}>
-              {this.props.images.map(img => {
+            <ul className={css.gallery} onClick={toggleModal}>
+              {images.map(img => {
                 return (
                 <ImageGalleryItem
                 key={nanoid()}
@@ -45,11 +43,10 @@ export default class ImageGallery extends Component {
                 })}
             </ul>
 
-            {showModal && largeImage && (<Modal onClose={this.toggleModal} picture={largeImage} />)}
+            {showModal && largeImage && (<Modal onClose={toggleModal} picture={largeImage} />)}
           </>
         );
-      }
-    };
+      };
 
     ImageGallery.propTypes = {
         images: PropTypes.arrayOf(
@@ -60,3 +57,5 @@ export default class ImageGallery extends Component {
           })
         ),
       };
+
+    export default ImageGallery;
