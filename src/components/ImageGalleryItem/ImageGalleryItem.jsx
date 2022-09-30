@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import css from './ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
 
-export default class ImageGalleryItem extends Component {
-    render() {
+ function ImageGalleryItem({ preview, id }) {
       return (
         <li className={css.galleryItem}>
-          <img src={this.props.preview} className={css.image} alt={this.props.id} />
+          <img src={preview} className={css.image} alt={id} />
         </li>
       );
-    }
   }
   
   
@@ -17,3 +15,5 @@ export default class ImageGalleryItem extends Component {
     id: PropTypes.number.isRequired,
     preview: PropTypes.string.isRequired,
   };
+
+  export default ImageGalleryItem;

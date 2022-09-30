@@ -31,12 +31,12 @@ function App() {
           if (res.ok) {
             return res.json();
           }
-          return Promise.reject(new Error('Failed to find any images'));
+          return Promise.reject(new Error('Something goes wrong. Please, try again.'));
         })
 
         .then(pictures => {
           if (!pictures.total) {
-            toast.error('Did find anything, mate');
+            toast.error('We could not find anything!');
           }
           return pictures;
         })
