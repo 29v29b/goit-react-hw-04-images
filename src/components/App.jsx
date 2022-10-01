@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Button from "./Button/Button";
@@ -15,13 +15,16 @@ function App() {
   const [status, setStatus] = useState('idle');
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
+  const [prevQuery, setPrevQuery] = useState('');
   const [totalHits, setTotalHits] = useState(null);
-    
+ 
   
+
   useEffect(() => {
     if (query === '') {
       return;
     }
+    
     setStatus('pending');
     const fetchImages = () => {
       return fetch(
@@ -33,7 +36,6 @@ function App() {
           }
           return Promise.reject(new Error('Something goes wrong. Please, try again.'));
         })
-
         .then(pictures => {
           if (!pictures.total) {
             toast.error('We could not find anything!');
@@ -63,7 +65,13 @@ function App() {
   const onSubmit = query => {
     setQuery(query);
     setPage(1);
-    setPictures([]);
+
+    if(prevQuery !== query) {
+      setPictures([]);
+    } else {
+      toast.error(`Change your search "${query}" by new, please.`)
+    }
+    setPrevQuery(query)
   };
 
     return (

@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import css from './Searchbar.module.css'
 
 function Searchbar({onSubmit}) {
-    const [query, setQuery] = useState('')
+    const [query, setQuery] = useState('');
+    
 
     const handleInputChange = event => {
         setQuery(event.target.value.toLowerCase());
@@ -14,12 +15,12 @@ function Searchbar({onSubmit}) {
     const handleSubmit = event => {
         
         event.preventDefault();
-    
+         
         if (query.trim() === '') {
             toast.error('Please, enter your word.')
             return;
         }
-        
+       
         onSubmit(query);
         };
 
