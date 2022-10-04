@@ -15,7 +15,6 @@ function App() {
   const [status, setStatus] = useState('idle');
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
-  const [prevQuery, setPrevQuery] = useState('');
   const [totalHits, setTotalHits] = useState(null);
  
   
@@ -62,16 +61,12 @@ function App() {
     setPage(prev => prev + 1);
   };
 
-  const onSubmit = query => {
-    setQuery(query);
-    setPage(1);
-
-    if(prevQuery !== query) {
+  const onSubmit = newQuery => {
+    if(query !== newQuery) {
       setPictures([]);
-    } else {
-      toast.error(`Change your search "${query}" by new, please.`)
-    }
-    setPrevQuery(query)
+      setQuery(newQuery)
+      setPage(1)
+    }  
   };
 
     return (
